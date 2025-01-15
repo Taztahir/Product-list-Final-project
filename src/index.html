@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./output.css">
+  <link href="./output.css" rel="stylesheet">
   <script src="https://unpkg.com/alpinejs" defer></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <title>Desserts</title>
 </head>
 <body class=" font-sans px-5 xl:px-32 md:px-16" style="background-color: hsl(13, 31%, 94%);">
@@ -19,10 +19,10 @@
       <template x-for="item in items" :key="item.id">
         <div class="rounded-lg">
           <img :src="item.image" alt="Dessert" class="rounded w-full h-48 object-cover md:hidden">
-          <img :src="item.images" alt="Dessert" class="rounded w-full h-48 object-cover max-md:hidden hover:border-2 border-orange-600">
+          <img :src="item.images" alt="Dessert" class="rounded w-full h-48 object-cover max-md:hidden hover:border-2 border-orange-600"  id="imagess"  :class="{'border-2 border-orange-600': item.inCart}" >
           <div class="flex justify-center -translate-y-5">
             <button 
-              class="flex space-x-2 border  bg-white px-4 py-2 rounded-full " style="border-color: hsl(12, 20%, 44%); "
+              class="flex space-x-2 border bg-white px-4 py-2 rounded-full hover:text-orange-700" style="border-color: hsl(12, 20%, 44%); "
               x-show="!item.inCart"
               @click="addToCart(item)">
               <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" viewBox="0 0 21 20"><g fill="#C73B0F" clip-path="url(#a)"><path d="M6.583 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM15.334 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM3.446 1.752a.625.625 0 0 0-.613-.502h-2.5V2.5h1.988l2.4 11.998a.625.625 0 0 0 .612.502h11.25v-1.25H5.847l-.5-2.5h11.238a.625.625 0 0 0 .61-.49l1.417-6.385h-1.28L16.083 10H5.096l-1.65-8.248Z"/><path d="M11.584 3.75v-2.5h-1.25v2.5h-2.5V5h2.5v2.5h1.25V5h2.5V3.75h-2.5Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M.333 0h20v20h-20z"/></clipPath></defs></svg>
@@ -35,7 +35,7 @@
               <span x-text="item.quantity" class="text-white"></span>
               <button 
                 class=" rounded-md text-gray-700"
-                @click="increaseQuantity(item)"><ion-icon name="add-circle-outline" class="text-white"></ion-icon></button>
+                @click="increaseQuantity(item)"><ion-icon name="add-circle-outline" class="text-white hover:bg-white rounded-full hover:text-black"></ion-icon></button>
             </div>
           </div>
           <div class="">
@@ -87,6 +87,13 @@
               <span class="font-bold text-lg">$</span>
               <span x-text="cartTotal.toFixed(2)" class="font-bold text-lg"></span>
             </span></p>
+            <div class="flex space-x-2 justify-center py-3 my-2 rounded px-5" style="background-color: hsl(13, 31%, 94%);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" viewBox="0 0 21 20"><path fill="#1EA575" d="M8 18.75H6.125V17.5H8V9.729L5.803 8.41l.644-1.072 2.196 1.318a1.256 1.256 0 0 1 .607 1.072V17.5A1.25 1.25 0 0 1 8 18.75Z"/><path fill="#1EA575" d="M14.25 18.75h-1.875a1.25 1.25 0 0 1-1.25-1.25v-6.875h3.75a2.498 2.498 0 0 0 2.488-2.747 2.594 2.594 0 0 0-2.622-2.253h-.99l-.11-.487C13.283 3.56 11.769 2.5 9.875 2.5a3.762 3.762 0 0 0-3.4 2.179l-.194.417-.54-.072A1.876 1.876 0 0 0 5.5 5a2.5 2.5 0 1 0 0 5v1.25a3.75 3.75 0 0 1 0-7.5h.05a5.019 5.019 0 0 1 4.325-2.5c2.3 0 4.182 1.236 4.845 3.125h.02a3.852 3.852 0 0 1 3.868 3.384 3.75 3.75 0 0 1-3.733 4.116h-2.5V17.5h1.875v1.25Z"/></svg>
+              <span class="text-sm">
+                This is a <span class="font-bold">carbon-neutral</span> delivery
+              </span>
+              
+            </div>
           <button 
             class=" text-white px-4 w-full py-2 rounded-full mt-2 focus:outline-none hover:bg-green-600" style="background-color: hsl(14, 86%, 42%);"
             @click="confirmOrder">
@@ -143,65 +150,6 @@
     </div>
   </div>
 
-  <script>
-    function cartApp() {
-      return {
-        items: [
-          { id: 1, name: 'Waffle with Berries', prices: "$6.50", price: 6.50, image: 'image-waffle-mobile.jpg', images: 'image-waffle-desktop.jpg', inCart: false, quantity: 0, specify: 'Waffle' },
-          { id: 2, name: 'Vanilla Bean Crème Brûlée', prices: "$7.00", price: 7.00, image: 'image-creme-brulee-mobile.jpg', images: 'image-creme-brulee-desktop.jpg', inCart: false, quantity: 0, specify: 'Creme Brulee' },
-          { id: 3, name: 'Macaron Mix of Five', prices: "$8.00", price: 8.00, image: 'image-macaron-mobile.jpg', images: 'image-macaron-desktop.jpg', inCart: false, quantity: 0, specify: 'Macaron' },
-          { id: 4, name: 'Classic Tiramisu', prices: "$5.50", price: 5.50, image: 'image-tiramisu-mobile.jpg', images: 'image-tiramisu-desktop.jpg', inCart: false, quantity: 0, specify: 'Tiramisu' },
-          { id: 5, name: 'Pistachio Baklava', prices: "$4.00", price: 4.00, image: 'image-baklava-mobile.jpg', images: 'image-baklava-desktop.jpg', inCart: false, quantity: 0, specify: 'Baklava' },
-          { id: 6, name: 'Lemon Meringue Pie', prices: "$5.00", price: 5.00, image: 'image-meringue-mobile.jpg', images: 'image-meringue-desktop.jpg', inCart: false, quantity: 0, specify: 'Pie' },
-          { id: 7, name: 'Red Velvet Cake', prices: "$4.50", price: 4.50, image: 'image-cake-mobile.jpg', images: 'image-cake-desktop.jpg', inCart: false, quantity: 0, specify: 'Cake' },
-          { id: 8, name: 'Salted Caramel Brownie', prices: "$5.50", price: 5.50, image: 'image-brownie-mobile.jpg', images: 'image-brownie-desktop.jpg', inCart: false, quantity: 0, specify: 'Brownie' },
-          { id: 9, name: 'Vanilla Panna Cotta', prices: "$6.50", price: 6.50, image: 'image-panna-cotta-mobile.jpg', images: 'image-panna-cotta-desktop.jpg', inCart: false, quantity: 0, specify: 'Panna Cotta' }
-        ],
-        cart: [],
-        orderConfirmed: false,
-
-        addToCart(item) {
-          item.inCart = true;
-          item.quantity = 1;
-          this.cart.push(item);
-        },
-
-        increaseQuantity(item) {
-          item.quantity++;
-        },
-
-        decreaseQuantity(item) {
-          if (item.quantity > 1) {
-            item.quantity--;
-          } else {
-            this.removeFromCart(item);
-          }
-        },
-
-        removeFromCart(item) {
-          item.inCart = false;
-          item.quantity = 0;
-          this.cart = this.cart.filter(cartItem => cartItem.id !== item.id);
-        },
-
-        get cartTotal() {
-          return this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-        },
-
-        confirmOrder() {
-          this.orderConfirmed = true;
-        },
-
-        startNewOrder() {
-          this.cart.forEach(item => {
-            item.inCart = false;
-            item.quantity = 0;
-          });
-          this.cart = [];
-          this.orderConfirmed = false;
-        },
-      };
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
